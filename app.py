@@ -12,7 +12,6 @@ def start_game():
 
 def main():
     start_game()
-    # phrase()
 
 
 if __name__ == '__main__':
