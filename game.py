@@ -67,14 +67,20 @@ class Game():
             if attempts > 3:
                 self.active_phrase.display(self.guesses)
             try:
-                guess = input('\n\nGuess a letter:  ').lower()
-                if not guess.isalpha():
-                    print("\nSorry, please enter a letter")
+                guess = input(
+                    '\n\nGuess a letter:\nOR\nEnter "1" to guess the whole phrase:\n>>>')
+                if guess == "1":
+                    attempts += 1
+                    self.guess_entire_phrase()
+                    break
+                elif not guess.isalpha():
+                    print("\nSorry, please enter a letter or 1")
                     attempts += 1
                 elif len(guess) > 1:
                     print("\nSorry, please only enter one letter at a time")
                     attempts += 1
                 else:
+                    guess = guess.lower()
                     if guess in self.guesses:
                         print("\n\nYou already guessed that letter. Try again")
                         attempts += 1
@@ -88,3 +94,16 @@ class Game():
 
     def random_phrase(self):
         return random.choice(self.phrases)
+
+    def guess_entire_phrase(self):
+        entire_phrase = input(
+            "\nGuess the entire phrase (letters only) with no punctuation or apostroph:   ").lower()
+        if entire_phrase == self.active_phrase.phrase.lower():
+            entire_phrase = entire_phrase.replace(" ", "").replace(
+                ".", "").replace("'", "").replace("!", "").replace("?", "")
+            for letter in entire_phrase:
+                if letter not in self.guesses:
+                    self.guesses.append(letter)
+        else:
+            print(
+                "\nSorry, that wasn't the phrase! Double check your spelling and try again.")
